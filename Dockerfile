@@ -13,10 +13,13 @@ RUN apt-get update && \
 
 # Set up clamav on this and run it
 WORKDIR /tmp
-RUN wget -o https://www.clamav.net/downloads/production/clamav-1.4.2.linux.x86_64.deb
+RUN wget https://www.clamav.net/downloads/production/clamav-1.4.2.linux.x86_64.deb
 
 RUN apt install -y ./clamav-1.4.2.linux.x86_64.deb
 
+COPY ./freshclam.conf /usr/local/etc/freshclam.conf
+RUN groupadd clamav
+RUN useradd -g clamav clamav
 # See if we can update clam-av out the box
 RUN freshclam --verbose --log=/tmp/clamav-log.log --datadir=/tmp/clamav-data
 
