@@ -14,7 +14,7 @@ docker build -t vnc_ubuntu24 . --progress=plain
 
 # Default command for run
 
-docker run --privileged -it -dt --name Ubuntu24 -p <port>:5901 -p <port>:22 -p <port>:80 vnc_ubuntu24:latest
+docker run --privileged -it -dt --shm-size=1g --name Ubuntu24 -p <port>:5901 -p <port>:22 -p <port>:80 vnc_ubuntu24:latest
 
 ## Exposed ports
 5901 -> VNC default port, allows a VNC client to connect
