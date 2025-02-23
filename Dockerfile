@@ -63,8 +63,6 @@ EXPOSE 5901
 
 ENV DESKTOP_SESSION=xfce
 
-COPY .htaccess /usr/share/novnc
-
 RUN touch /startup.sh
 RUN echo "#!/bin/bash" >> /startup.sh
 RUN echo "/usr/sbin/sshd -D &" >> /startup.sh
