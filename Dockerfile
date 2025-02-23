@@ -68,7 +68,7 @@ RUN echo "#!/bin/bash" >> /startup.sh
 RUN echo "/usr/sbin/sshd -D &" >> /startup.sh
 RUN echo "Xvfb :1 -screen 0 1024x768x24 &" >> /startup.sh
 RUN echo "x11vnc -rfbport 5901 -noshm -forever &" >> /startup.sh
-RUN echo "websockify --web=/usr/share/novnc --cert=/etc/ssl/private/server.pem --key=/etc/ssl/private/server.key 8080 localhost:5901 &" >> /startup.sh
+RUN echo "websockify --web=/usr/share/novnc --cert=/etc/ssl/private/server.pem --key=/etc/ssl/private/server.key 9081 localhost:5901 &" >> /startup.sh
 RUN echo "setcap cap_sys_admin+ep /usr/bin/xfce4-session &" >> /startup.sh
 RUN echo "xfce4-session &" >> /startup.sh
 RUN echo "service apache2 start" >> /startup.sh
@@ -92,3 +92,17 @@ ENV USER=ubuntu
 USER root
 WORKDIR /
 ENTRYPOINT ["bash", "/startup.sh"]
+
+FROM system as nodelayer
+
+RUN apt-get install -y curl 
+
+RUN touch /root/.bashrc && chmod +x /root/.bashrc
+
+RUN mkdir /root/.nvm
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN source ~/.nvm/nvm.sh && nvm install --lts && nvm use --lts && which npm 
+
